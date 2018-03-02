@@ -394,6 +394,13 @@ touchMove(e) {
 let a = num | 0
 ```
 
+子组件向父组件传值
+```js
+// 子组件
+this.$emit('scroll', 5233)
+
+```
+
 #### 关于better-scroll
 
 scrollToElement(el, time, offsetX, offsetY, easing)

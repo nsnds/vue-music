@@ -41,6 +41,15 @@
           click: this.click
         })
 
+        //是否要监听scroll滚动
+        if (this.listenScroll) {
+          let vm = this
+          this.scroll.on('scroll', (pos) => {
+            // 派发scroll，父组件可以获取pos的值
+            vm.$emit('scroll', pos)
+          })
+        }
+
       },
       enable() {
         this.scroll && this.scroll.enable()
