@@ -80,6 +80,7 @@ module.exports = {
 ```js
 // 以下都是配置了alias的前提下
 
+// css中@import common的路径需要加上~
 @import "~common/stylus/base.sytl"
 
 // js中improt common的路径不需要加~
