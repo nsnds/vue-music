@@ -1,17 +1,17 @@
 # vue-music
 
-**安装vue-cli**
+#### 安装vue-cli
 ```js
 cnpm i vue-cli -g
 ```
 
-**创建项目**
+#### 创建项目
 ```js
 vue init webpack music
 // vue-router & eslink yes
 ```
 
-**添加项目依赖**
+#### 添加项目依赖
 ```js
 // package.json
 "dependencies": {
@@ -36,7 +36,7 @@ fastclick.attach(document)
 
 <font color="red">import 语句要用单引号('')</font>
 
-**修改目录结构**
+#### 修改目录结构
 ```
 // src
 api: 跟后端请求相关的代码目录
@@ -50,7 +50,7 @@ router: 路由目录
 store: vuex相关代码目录
 ```
 
-**配置.eslintrc.js**
+#### 配置.eslintrc.js
 ```js
 // 不检测文件末尾是否有空行
 "eol-last": 0
@@ -64,7 +64,7 @@ store: vuex相关代码目录
 
 <font color="red">不可以用tab代替空格，会被警告</font>
 
-**配置webpack.base.conf.js**
+#### 配置webpack.base.conf.js
 ```js
 module.exports = {
   resolve: {
@@ -87,7 +87,7 @@ module.exports = {
 import 'common/stylus/index.styl'
 ```
 
-**header组件**
+#### header组件
 ```js
 // .vue后缀可以省略、需要用单引号('')
 import MHeader from 'components/m-header/m-header'
@@ -100,7 +100,7 @@ export default {
 }
 ```
 
-**顶部导航组件**
+#### 顶部导航组件
 ```html
 <router-link tag="div" class="tab-item" to="/rank"></router-link>
 <!==
@@ -118,7 +118,7 @@ to: 跳转的路由
 */
 ```
 
-**路由配置**
+#### 路由配置
 ```js
 // src/router/index.js
 import Recommend from 'components/recommend/recommend'
@@ -136,11 +136,11 @@ export default new Router({
 })
 ```
 
-**chrome json-view**
+#### chrome json-view
 
 [github地址](https://github.com/gildas-lormeau/JSONView-for-Chrome/tree/master/WebContent)
 
-**封装jsonp**
+#### 封装jsonp
 ```js
 // package.json
 "dependencies": {
@@ -154,7 +154,7 @@ encodeURIComponent: 对字符串进行编码，不会对字母、数字、标点
 encodeURI: 对字符串进行编码，不会对字母、数字、标点符号和;/?:@&=+$,#进行编码
 ```
 
-**推荐页面slider组件**
+#### 推荐页面slider组件
 
 base文件夹: 基础组件库
 
@@ -262,7 +262,7 @@ if (this loop && !isResize) {
 </keep-alive>
 ```
 
-**推荐页面歌单部分**
+#### 推荐页面歌单部分
 ```js
 const a = {x: 1, y: 2}
 
@@ -288,7 +288,7 @@ devServer: {
 
 ```
 
-**sceoll组件**
+#### sceoll组件
 ```html
 <!-- scroll.vue -->
 <tamplate>
@@ -308,7 +308,7 @@ devServer: {
 <scroll>
 ```
 
-**图片懒加载**
+#### 图片懒加载
 
 插件：vue-lazyload
 ```js
@@ -319,11 +319,11 @@ Vue.use(VueLazyload, {
 })
 ```
 
-```h5
+```html
 <img v-lazy="imgUrl">
 ```
 
-**歌手页面**
+#### 歌手页面
 
 先对Findex做聚合，相同的作为一组数据。热门数据为前十条
 
@@ -344,8 +344,7 @@ export default class Singer {
 }
 ```
 
-[GitHub汉化](https://github.com/52cik/github-hans)
-
+正则匹配与升序排列
 ```js
 // 正则匹配是否全是字母
 str.match(/[a-zA-Z]/)	//是字母构成的字符串返回true
@@ -356,14 +355,70 @@ ret.sort((a, b) => {
 })
 ```
 
+map()
+```js
+// 作用: 将调用的数组中每个元素传递给指定函数，返回一个数组。
+// 注意：map应该有返回值，返回新数组但不改变原数组
+```
+
+事件对象获取对应元素dom
+```
+click(e) {
+  let dom = e.target
+}
+```
+
+关于stop、prevent修饰符
+```html
+<!-- 阻止冒泡、阻止默认事件，项目中是为了阻止屏幕随手指滑动 -->
+<div @touchmove.stop.prevent="">
+```
+
+获取touch事件的移动的距离
+```js
+const touch = {}
+
+touchStart(e) {
+  let firstTouch = e.touches[0]   //获取第一个手指touchStart的信息
+  touch.y1 = firstTouch.pageY   //获取当前位置的纵坐标
+}
+touchMove(e) {
+  let firstTouch = e.touches[0]   //获取第一个手指touchMove的信息
+  touch.y2 = firstTouch.pageY   //获取当前位置的纵坐标
+  let delta = touch.y2 - touch.y1   //获取滑动的距离
+}
+```
+
+向下取整
+```js
+let a = num | 0
+```
+
+#### 关于better-scroll
+
+scrollToElement(el, time, offsetX, offsetY, easing)
+```
+{DOM | String} el 滚动到的目标元素, 如果是字符串，则内部会尝试调用 querySelector 转换成 DOM 对象。
+{Number} time 滚动动画执行的时长（单位 ms）
+{Number | Boolean} offsetX 相对于目标元素的横轴偏移量，如果设置为 true，则滚到目标元素的中心位置
+{Number | Boolean} offsetY 相对于目标元素的纵轴偏移量，如果设置为 true，则滚到目标元素的中心位置
+{Object} easing 缓动函数，一般不建议修改，如果想修改，参考源码中的 ease.js 里的写法
+```
+
+#### 关于GitHub
+
+[GitHub汉化](https://github.com/52cik/github-hans)
+
+上传忽略node_modules文件夹
+```
+.gitignore
+
+node_modules/
+```
 
 
+#### 关于eslink的坑
 
-
-
-
-
-**关于eslink的坑**
 ```js
 import {getRecommend} from 'api/recommend'
 // improt进的getRecommend要使用，否则报错
