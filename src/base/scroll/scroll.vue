@@ -9,7 +9,7 @@
 
   export default {
     props: {
-      probType: {
+      probeType: {
         type: Number,
         default: 1
       },
@@ -37,19 +37,18 @@
           return
         }
         this.scroll = new BScroll(this.$refs.wrapper, {
-          probType: this.probType,
+          probeType: this.probeType,
           click: this.click
         })
 
         //是否要监听scroll滚动
         if (this.listenScroll) {
-          let vm = this
+          let _this = this
           this.scroll.on('scroll', (pos) => {
             // 派发scroll，父组件可以获取pos的值
-            vm.$emit('scroll', pos)
+            _this.$emit('scroll', pos)
           })
         }
-
       },
       enable() {
         this.scroll && this.scroll.enable()

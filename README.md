@@ -399,6 +399,17 @@ let a = num | 0
 // 子组件
 this.$emit('scroll', 5233)
 
+// 父组件
+<scroll @scroll='scroll'>
+
+```
+
+点击右侧导航有active逻辑的注意点：
+```
+在中间部分滚动包括大于等于上线小于下线
+height1 <= -n && -n < height2
+
+不能写成 height1 <= -n < height2
 ```
 
 #### 关于better-scroll
@@ -410,6 +421,11 @@ scrollToElement(el, time, offsetX, offsetY, easing)
 {Number | Boolean} offsetX 相对于目标元素的横轴偏移量，如果设置为 true，则滚到目标元素的中心位置
 {Number | Boolean} offsetY 相对于目标元素的纵轴偏移量，如果设置为 true，则滚到目标元素的中心位置
 {Object} easing 缓动函数，一般不建议修改，如果想修改，参考源码中的 ease.js 里的写法
+```
+
+scroll事件
+```
+返回{x, y}，滚动的实时坐标。
 ```
 
 #### 关于GitHub
