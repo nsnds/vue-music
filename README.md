@@ -336,7 +336,7 @@ constructor函数就是构造函数
 
 ```js
 export default class Singer {
-  construCtor({id, name}) {
+  constructor({id, name}) {
     this.id = id
     this.name = name
     this.avatar = `https://y.gtimg.cn/5233${id}.jpg`
@@ -411,6 +411,122 @@ height1 <= -n && -n < height2
 
 不能写成 height1 <= -n < height2
 ```
+
+#### 歌手详情页面
+> 动画
+```html
+<transition name="slider">
+  ...
+</transition>
+
+<style>
+  .slide.enter-active, .alide-leave-active
+    transition: all 0.3s
+  .slide-enter, .slide-leave-to
+    transform: translate3d(100%, 0, 0)
+</style>
+```
+
+> vuex
+```
+|store
+|__index.js             入口文件
+|__state.js             状态
+|__mutations.js         mutation
+|__mutation-types.js    mutation相关的字符串常量
+|__actions.js           异步操作、对mutation的一些封装
+|__getters.js           获取state的映射
+```
+
+> vuex 测试工具 & 插件
+```js
+// 每次通过mutation修改state都会打印出日志
+import createLogger from 'vuex/dist/logger'
+
+// 如果是npm run dev，就是NODE_ENV环境；如果是npm run duild，是production
+const debug = process.env.NODE_ENV != 'production'
+
+Vuex.Store({
+  ...
+  strict: debug,
+  plugins: debug ? [createLogger()] : []
+})
+```
+
+> main.js 中要引入使用store
+```js
+import store from './store'
+new Vue({
+  ...
+  store
+})
+```
+
+> 工厂方法
+```js
+// 单例方法
+class Song () {
+  constructor({id, mid, singer, name}) {
+    this.id = id
+    this.mid = mid
+    this.singer = singer
+    this.name = name
+  }
+}
+
+// 工厂方法，不用每次创建一个对象都new
+function createSong(Data) {
+  return new Song({
+    id: Data.id,
+    mid: Data.mid,
+    singer: Data.singer,
+    name: Data.name
+  })
+}
+```
+
+> 浏览器能力检测
+
+<font color="red">动态创建一个div，获取它的style属性。用各大浏览器厂商的规定的transform去比对style是否存在，若是undefined则不是该运行环境浏览器</font>
+
+```js
+let elementStyle = document.createElement('div').style
+
+let vendor = (() => {
+  let transformName = {
+    webkit: 'webkitTransform',
+    Moz: 'MozTransform',
+    O: 'OTransform',
+    ms: 'msTransform',
+    standard: 'transform'
+  }
+
+  for (let key in transformName) {
+    if (style[transformName[key]] !== undefined) {
+      return key
+    }
+  }
+
+  return false
+})()
+
+export function prefixStyle(style) {
+  if (vendor === false) {
+    return false
+  }
+
+  if (vendor === 'standard') {
+    return style
+  }
+
+  return vendor + style.charAt(0).toUpperCase() + style.substr(1)
+}
+```
+
+#### 播放器页面
+> common/js/config.js，项目的相关配置
+
+
 
 #### 关于better-scroll
 
