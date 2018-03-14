@@ -1,48 +1,12 @@
 # vue-music
 
-#### 安装vue-cli
-```js
-cnpm i vue-cli -g
-```
-
-#### 创建项目
-```js
-vue init webpack music
-// vue-router & eslink yes
-```
-
-#### 添加项目依赖
-```js
-// package.json
-"dependencies": {
-  // 对es6语法进行转义，不需要在项目中引用
-  "babel-runtime": "^6.0.0",
-  // 解决移动端点击延迟300ms，需要在项目中引用
-  "fastclick": "^1.0.6"
-},
-"devDependencies": {
-  // babel的补丁，Promise等es6语法进行转译，需要在项目中引用
-  "babel-polyfill": "^6.2.0",
-}
-```
-
-```js
-// main.js
-import "babel-polyfill"
-import fastclick from "fastclick"
-
-fastclick.attach(document)
-```
-
-<font color="red">import 语句要用单引号('')</font>
-
 #### 修改目录结构
 ```
 // src
 api: 跟后端请求相关的代码目录
 common: 通用的静态资源目录，字体文件、公用图片、通用js、通用样式
 	base.styl: 基础样式文件
-	icon.styl: 
+	icon.styl: 字体图标文件
 	mixin.styl: 方法样式文件
 	variable.styl: 颜色、字体大小定义规范样式文件
 components: 组件目录
@@ -524,8 +488,120 @@ export function prefixStyle(style) {
 ```
 
 #### 播放器页面
-> common/js/config.js，项目的相关配置
 
+> common/js/config.js，项目的相关配置
+```js
+export const playMode = {
+  sequence: 0,    // 顺序播放
+  loop: 1,    // 单曲循环
+  random: 2   // 随机播放
+}
+```
+
+> vuex 编写思路
+```
+1. 在state.js中定义需要的数据。
+2. 在getters.js中映射数据。
+3. 在mutation-types.js中定义修改数据的动作。
+4. 在mutations中编写修改数据的逻辑
+```
+
+> 多次修改state，可以在actions.js中封装
+```js
+import * as types from './mutation-types'
+
+export const selectPlay = function ({commit, state}, {list, idx}) {
+  commit(types.SET_SEQUENCE_LIST, list)
+  commit(types.SET_PLAYLIST, list)
+  commit(types.SET_CURRENT_INDEX, idx)
+  commit(types.SET_FULL_SCREEN, true)
+  commit(types.SET_PLAYING_STATE, true)
+}
+```
+
+> vue动画提供的几个钩子
+```js
+methods: {
+  // --------
+  // 进入中
+  // --------
+
+  beforeEnter: function (el) {
+    // ...
+  },
+  // 此回调函数是可选项的设置
+  // 与 CSS 结合时使用
+  enter: function (el, done) {
+    // ...
+    done()
+  },
+  afterEnter: function (el) {
+    // ...
+  },
+  enterCancelled: function (el) {
+    // ...
+  },
+
+  // --------
+  // 离开时
+  // --------
+
+  beforeLeave: function (el) {
+    // ...
+  },
+  // 此回调函数是可选项的设置
+  // 与 CSS 结合时使用
+  leave: function (el, done) {
+    // ...
+    done()
+  },
+  afterLeave: function (el) {
+    // ...
+  },
+  // leaveCancelled 只用于 v-show 中
+  leaveCancelled: function (el) {
+    // ...
+  }
+}
+```
+
+> js操作css3动画的库：[create-keyframe-animation](https://github.com/HenrikJoreteg/create-keyframe-animation)
+```js
+// 配置动画效果
+let animation = {
+  0: {
+    transform: `10px, 20px, 0) scale(0})`
+  },
+  60: {
+    transform: `translate3d(0, 0, 0) scale(1.1)`
+  },
+  100: {
+    transform: `translate3d(0, 0, 0) scale(1)`
+  }
+}
+
+// 设置动画
+animations.registerAnimation({
+  name: 'move',   // 动画名字
+  animation,    // 动画效果
+  presets: {
+    duration: 400,    // 动画时长
+    easing: 'linear'    // 动画线性
+  }
+})
+
+// 运行动画
+animations.runAnimation(this.$refs.cdWrapper, 'move', done)
+
+// 取消动画
+animations.unregisterAnimation('move')
+```
+
+> transitionend事件：在css完成过渡后触发
+
+> canplay事件：表示视频或音频可以开始播放
+
+> error事件：表示视频或音频的错误状态
 
 
 #### 关于better-scroll

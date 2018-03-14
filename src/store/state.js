@@ -7,7 +7,7 @@ const state = {
   playing: false,
 
   // 是否全屏
-  fullScren: false,
+  fullScreen: false,
 
   // 播放列表
   playlist: [],
