@@ -1,7 +1,12 @@
 <template>
   <div class="song-list">
     <ul>
-      <li @click="selectItem(song, idx)" v-for="(song, idx) in songs" class="item">
+      <li
+        @click="selectItem(song, idx)"
+        v-for="(song, idx) in songs"
+        class="item"
+        :key="idx"
+      >
         <div class="content">
           <h2 class="name">{{song.name}}</h2>
           <p class="desc">{{getDesc(song)}}</p>
@@ -12,24 +17,23 @@
 </template>
 
 <script type="text/ecmascript6">
-  export default {
-    props: {
-      songs: {
-        type: Array,
-        default: []
-      }
+export default {
+  props: {
+    songs: {
+      type: Array,
+      default () { return [] }
+    }
+  },
+  methods: {
+    selectItem(song, idx) {
+      this.$emit('select', song, idx)
+      console.log(idx)
     },
-    methods: {
-      selectItem(song, idx) {
-        this.$emit('select', song, idx)
-        console.log(idx)
-      },
-      getDesc(song) {
-        return `${song.singer}·${song.album}`
-      }
-
+    getDesc(song) {
+      return `${song.singer}·${song.album}`
     }
   }
+}
 </script>
 
 <style scoped lang="stylus">

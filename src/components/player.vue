@@ -68,155 +68,155 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import {mapGetters, mapMutations} from 'vuex'
-  import animations from 'create-keyframe-animation'
-  import {prefixStyle} from 'common/js/dom'
+import {mapGetters, mapMutations} from 'vuex'
+import animations from 'create-keyframe-animation'
+import {prefixStyle} from 'common/js/dom'
 
-  const transform = prefixStyle('transform')
+const transform = prefixStyle('transform')
 
-  export default {
-    data() {
-      return {
-        songReady: false
+export default {
+  data() {
+    return {
+      songReady: false
+    }
+  },
+  computed: {
+    cdCls() {
+      return this.playing ? 'play' : 'play pause'
+    },
+    playIcon() {
+      return this.playing ? 'icon-pause' : 'icon-play'
+    },
+    miniIcon() {
+      return this.playing ? 'icon-pause-mini' : 'icon-play-mini'
+    },
+    disableCls() {
+      return this.songReady ? '' : 'disable'
+    },
+    ...mapGetters([
+      'fullScreen',
+      'playlist',
+      'currentSong',
+      'playing',
+      'currentIndex'
+    ])
+  },
+  methods: {
+    back() {
+      this.setFullScreen(false)
+    },
+    open() {
+      this.setFullScreen(true)
+    },
+    enter(el, done) {
+      const {x, y, scale} = this._getPosAndScale()
+
+      let animation = {
+        0: {
+          transform: `translate3d(${x}px, ${y}px, 0) scale(${scale})`
+        },
+        60: {
+          transform: `translate3d(0, 0, 0) scale(1.1)`
+        },
+        100: {
+          transform: `translate3d(0, 0, 0) scale(1)`
+        }
       }
+
+      animations.registerAnimation({
+        name: 'move',
+        animation,
+        presets: {
+          duration: 400,
+          easing: 'linear'
+        }
+      })
+
+      animations.runAnimation(this.$refs.cdWrapper, 'move', done)
     },
-    computed: {
-      cdCls() {
-        return this.playing ? 'play' : 'play pause'
-      },
-      playIcon() {
-        return this.playing ? 'icon-pause' : 'icon-play'
-      },
-      miniIcon() {
-        return this.playing ? 'icon-pause-mini' : 'icon-play-mini'
-      },
-      disableCls() {
-        return this.songReady ? '' : 'disable'
-      },
-      ...mapGetters([
-        'fullScreen',
-        'playlist',
-        'currentSong',
-        'playing',
-        'currentIndex'
-      ])
+    afterEnter() {
+      animations.unregisterAnimation('move')
+      this.$refs.cdWrapper.style.animation = ''
     },
-    methods: {
-      back() {
-        this.setFullScreen(false)
-      },
-      open() {
-        this.setFullScreen(true)
-      },
-      enter(el, done) {
-        const {x, y, scale} = this._getPosAndScale()
-
-        let animation = {
-          0: {
-            transform: `translate3d(${x}px, ${y}px, 0) scale(${scale})`
-          },
-          60: {
-            transform: `translate3d(0, 0, 0) scale(1.1)`
-          },
-          100: {
-            transform: `translate3d(0, 0, 0) scale(1)`
-          }
-        }
-
-        animations.registerAnimation({
-          name: 'move',
-          animation,
-          presets: {
-            duration: 400,
-            easing: 'linear'
-          }
-        })
-
-        animations.runAnimation(this.$refs.cdWrapper, 'move', done)
-      },
-      afterEnter() {
-        animations.unregisterAnimation('move')
-        this.$refs.cdWrapper.style.animation = ''
-      },
-      leave(el, done) {
-        this.$refs.cdWrapper.style.transition = 'all 0.4s'
-        const {x, y, scale} = this._getPosAndScale()
-        this.$refs.cdWrapper.style[transform] = `translate3d(${x}px, ${y}px, 0) scale(${scale})`
-        this.$refs.cdWrapper.addEventListener('transitionend', done)
-      },
-      afterLeave() {
-        this.$refs.cdWrapper.style.transition = ''
-        this.$refs.cdWrapper.style[transform] = ''
-      },
-      togglePlaying() {
-        this.setPlayingState(!this.playing)
-      },
-      next() {
-        if (!this.songReady) return
-        let index = this.currentIndex + 1
-        if (index === this.playlist.length) {
-          index = 0
-        }
-        this.setCurrentIndex(index)
-        if (!this.playing) {
-          this.togglePlaying()
-        }
-        this.songReady = false
-      },
-      prev() {
-        if (!this.songReady) return
-        let index = this.currentIndex - 1
-        if (index === -1) {
-          index = this.playlist.length
-        }
-        this.setCurrentIndex(index)
-        if (!this.playing) {
-          this.togglePlaying()
-        }
-        this.songReady = false
-      },
-      ready() {
-        this.songReady = true
-      },
-      error() {
-        this.songReady = true
-      },
-      _getPosAndScale() {
-        // miniImg width
-        const targetWidth = 40
-        // miniImg中心离左边屏幕的距离
-        const paddingLeft = 40
-        // miniImg中心离下边屏幕的距离
-        const paddingBottom = 30
-        // normalImg顶部离上边屏幕的距离
-        const paddingTop = 80
-        // normalImg width
-        const width = window.innerWidth * 0.8
-        const scale = targetWidth / width
-        const x = -(window.innerWidth / 2 - paddingLeft)
-        const y = window.innerHeight - paddingTop - width / 2 - paddingBottom
-        return {x, y, scale}
-      },
-      ...mapMutations({
-        setFullScreen: 'SET_FULL_SCREEN',
-        setPlayingState: 'SET_PLAYING_STATE',
-        setCurrentIndex: 'SET_CURRENT_INDEX'
+    leave(el, done) {
+      this.$refs.cdWrapper.style.transition = 'all 0.4s'
+      const {x, y, scale} = this._getPosAndScale()
+      this.$refs.cdWrapper.style[transform] = `translate3d(${x}px, ${y}px, 0) scale(${scale})`
+      this.$refs.cdWrapper.addEventListener('transitionend', done)
+    },
+    afterLeave() {
+      this.$refs.cdWrapper.style.transition = ''
+      this.$refs.cdWrapper.style[transform] = ''
+    },
+    togglePlaying() {
+      this.setPlayingState(!this.playing)
+    },
+    next() {
+      if (!this.songReady) return
+      let index = this.currentIndex + 1
+      if (index === this.playlist.length) {
+        index = 0
+      }
+      this.setCurrentIndex(index)
+      if (!this.playing) {
+        this.togglePlaying()
+      }
+      this.songReady = false
+    },
+    prev() {
+      if (!this.songReady) return
+      let index = this.currentIndex - 1
+      if (index === -1) {
+        index = this.playlist.length
+      }
+      this.setCurrentIndex(index)
+      if (!this.playing) {
+        this.togglePlaying()
+      }
+      this.songReady = false
+    },
+    ready() {
+      this.songReady = true
+    },
+    error() {
+      this.songReady = true
+    },
+    _getPosAndScale() {
+      // miniImg width
+      const targetWidth = 40
+      // miniImg中心离左边屏幕的距离
+      const paddingLeft = 40
+      // miniImg中心离下边屏幕的距离
+      const paddingBottom = 30
+      // normalImg顶部离上边屏幕的距离
+      const paddingTop = 80
+      // normalImg width
+      const width = window.innerWidth * 0.8
+      const scale = targetWidth / width
+      const x = -(window.innerWidth / 2 - paddingLeft)
+      const y = window.innerHeight - paddingTop - width / 2 - paddingBottom
+      return {x, y, scale}
+    },
+    ...mapMutations({
+      setFullScreen: 'SET_FULL_SCREEN',
+      setPlayingState: 'SET_PLAYING_STATE',
+      setCurrentIndex: 'SET_CURRENT_INDEX'
+    })
+  },
+  watch: {
+    currentSong(n) {
+      this.$nextTick(() => {
+        this.$refs.audio.play()
       })
     },
-    watch: {
-      currentSong(n) {
-        this.$nextTick(() => {
-          this.$refs.audio.play()
-        })
-      },
-      playing(n) {
-        const audio = this.$refs.audio
-        this.$nextTick(() => {
-          n ? audio.play() : audio.pause()
-        })
-      }
+    playing(n) {
+      const audio = this.$refs.audio
+      this.$nextTick(() => {
+        n ? audio.play() : audio.pause()
+      })
     }
   }
+}
 </script>
 
 <style scoped lang="stylus" rel="stylesheet/stylus">

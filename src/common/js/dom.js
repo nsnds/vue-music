@@ -1,4 +1,4 @@
-//添加class
+// 添加class
 export function addClass(el, className) {
   if (hasClass(el, className)) {
     return
@@ -17,7 +17,7 @@ export function hasClass(el, className) {
 export function getData(el, name, val) {
   const prefix = 'data-'
   name = prefix + name
-  if(val) {
+  if (val) {
     return el.setAttribute(name, val)
   } else {
     return el.getAttribute(name)
