@@ -5,34 +5,34 @@
 </template>
 
 <script type="text/ecmascript-6">
-import {mapGetters} from 'vuex'
-import {getSingerDetail} from 'api/singer'
-import {ERR_OK} from 'api/config'
-import {createSong} from 'common/js/song'
+import { mapGetters } from 'vuex'
+import { getSingerDetail } from 'api/singer'
+import { ERR_OK } from 'api/config'
+import { createSong } from 'common/js/song'
 import MusicList from 'components/music-list/music-list'
 
 export default {
-  data() {
+  data () {
     return {
       songs: []
     }
   },
   computed: {
-    title() {
+    title () {
       return this.singer.name
     },
-    bgImage() {
+    bgImage () {
       return this.singer.avatar
     },
     ...mapGetters([
       'singer'
     ])
   },
-  created() {
+  created () {
     this._getDetail()
   },
   methods: {
-    _getDetail() {
+    _getDetail () {
       if (!this.singer.id) {
         return this.$router.push('/singer')
       }
@@ -44,10 +44,10 @@ export default {
         }
       })
     },
-    _normallizeSongs(list) {
+    _normallizeSongs (list) {
       let ret = []
       list.forEach((item) => {
-        let {musicData} = item
+        let { musicData } = item
         if (musicData.songid && musicData.albummid) {
           ret.push(createSong(musicData))
         }

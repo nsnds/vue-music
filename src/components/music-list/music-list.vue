@@ -28,9 +28,9 @@
 <script type="text/ecmascript6">
 import Scroll from 'base/scroll/scroll'
 import SongList from 'base/song-list/song-list'
-import {prefixStyle} from 'common/js/dom'
+import { prefixStyle } from 'common/js/dom'
 import Loading from 'base/loading/loading'
-import {mapActions} from 'vuex'
+import { mapActions } from 'vuex'
 
 const RESERVED_HEIGHT = 40
 const transform = prefixStyle('transform')
@@ -51,33 +51,33 @@ export default {
       default: ''
     }
   },
-  data() {
+  data () {
     return {
       scrollY: 0
     }
   },
   computed: {
-    bgStyle() {
+    bgStyle () {
       return `background-image:url(${this.bgImage})`
     }
   },
-  created() {
+  created () {
     this.probeType = 3
     this.listenScroll = true
   },
-  mounted() {
+  mounted () {
     this.imageHeight = this.$refs.bgImage.clientHeight
     this.minTranslateY = -this.imageHeight + RESERVED_HEIGHT
     this.$refs.list.$el.style.top = `${this.imageHeight}px`
   },
   methods: {
-    scroll(pos) {
+    scroll (pos) {
       this.scrollY = pos.y
     },
-    back() {
+    back () {
       this.$router.back()
     },
-    selectItem(song, index) {
+    selectItem (song, index) {
       this.selectPlay({
         list: this.songs,
         index
@@ -88,7 +88,7 @@ export default {
     ])
   },
   watch: {
-    scrollY(n) {
+    scrollY (n) {
       let translateY = Math.max(this.minTranslateY, n)
       let zIndex = 0
       let scale = 1

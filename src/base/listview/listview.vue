@@ -45,19 +45,19 @@
 
 <script type="text/ecmascript-6">
 import Scroll from 'base/scroll/scroll'
-import {getData} from 'common/js/dom'
+import { getData } from 'common/js/dom'
 
 const ANCHOR_HEIGHT = 18
 const TITLE_HEIGHT = 30
 
 export default {
-  created() {
+  created () {
     this.touch = {}
     this.listenScroll = true
     this.listHeight = []
     this.probeType = 3
   },
-  data() {
+  data () {
     return {
       scrollY: -1,
       currentIndex: 0,
@@ -71,12 +71,12 @@ export default {
     }
   },
   computed: {
-    shortcutList() {
+    shortcutList () {
       return this.data.map((group) => {
         return group.title.substr(0, 1)
       })
     },
-    fixedTitle() {
+    fixedTitle () {
       if (this.scrollY > 0) {
         return ''
       }
@@ -84,27 +84,27 @@ export default {
     }
   },
   methods: {
-    selectItem(item) {
+    selectItem (item) {
       this.$emit('select', item)
     },
-    onShortcuTouchStart(e) {
+    onShortcuTouchStart (e) {
       let anchorIndex = getData(e.target, 'idx')
       let firstTouch = e.touches[0]
       this.touch.y1 = firstTouch.pageY
       this.touch.anchorIndex = anchorIndex
       this._scrollTo(anchorIndex)
     },
-    onShortcuTouchMove(e) {
+    onShortcuTouchMove (e) {
       let firstTouch = e.touches[0]
       this.touch.y2 = firstTouch.pageY
       let delta = (this.touch.y2 - this.touch.y1) / ANCHOR_HEIGHT | 0
       let anchorIndex = parseInt(this.touch.anchorIndex) + delta
       this._scrollTo(anchorIndex)
     },
-    scroll(pos) {
+    scroll (pos) {
       this.scrollY = pos.y
     },
-    _scrollTo(idx) {
+    _scrollTo (idx) {
       if (!idx && idx !== 0) {
         return
       }
@@ -115,7 +115,7 @@ export default {
       this.scrollY = -this.listHeight[idx]
       this.$refs.listview.scrollToElement(this.$refs.listGroup[idx], 0)
     },
-    _calculateHeight() {
+    _calculateHeight () {
       this.listHeight = []
       const list = this.$refs.listGroup
       let height = 0
@@ -131,12 +131,12 @@ export default {
     Scroll
   },
   watch: {
-    data() {
+    data () {
       this.$nextTick(() => {
         this._calculateHeight()
       })
     },
-    scrollY(n) {
+    scrollY (n) {
       const listHeight = this.listHeight
 
       // 滚动到顶部以上
@@ -159,7 +159,7 @@ export default {
       // 滚动到底部或底部以下
       this.currentIndex = listHeight.length - 2
     },
-    diff(n) {
+    diff (n) {
       console.log(n)
       let fixedTop = (n > 0 && n < TITLE_HEIGHT) ? n - TITLE_HEIGHT : 0
       if (this.fixedTop === fixedTop) {

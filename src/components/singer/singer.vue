@@ -6,39 +6,39 @@
 </template>
 
 <script type="text/ecmascript6">
-import {getSingerList} from 'api/singer'
-import {ERR_OK} from 'api/config'
+import { getSingerList } from 'api/singer'
+import { ERR_OK } from 'api/config'
 import Singer from 'common/js/singer'
 import ListView from 'base/listview/listview'
-import {mapMutations} from 'vuex'
+import { mapMutations } from 'vuex'
 
 const HOT_NAME = '热门'
 const HOT_SINGER_LEN = 10
 
 export default {
-  data() {
+  data () {
     return {
       singers: []
     }
   },
-  created() {
+  created () {
     this._getSingerList()
   },
   methods: {
-    selectSinger(singer) {
+    selectSinger (singer) {
       this.$router.push({
         path: `/singer/${singer.id}`
       })
       this.setSinger(singer)
     },
-    _getSingerList() {
+    _getSingerList () {
       getSingerList().then((res) => {
         if (res.code === ERR_OK) {
           this.singers = this._normalzeSinger(res.data.list)
         }
       })
     },
-    _normalzeSinger(list) {
+    _normalzeSinger (list) {
       let map = {
         hot: {
           title: HOT_NAME,

@@ -1,5 +1,5 @@
 // 添加class
-export function addClass(el, className) {
+export function addClass (el, className) {
   if (hasClass(el, className)) {
     return
   }
@@ -9,12 +9,12 @@ export function addClass(el, className) {
 }
 
 // 查询是否存在class
-export function hasClass(el, className) {
+export function hasClass (el, className) {
   let reg = new RegExp('(^|\\s)' + className + '(\\s|$)')
   return reg.test(el.className)
 }
 
-export function getData(el, name, val) {
+export function getData (el, name, val) {
   const prefix = 'data-'
   name = prefix + name
   if (val) {
@@ -44,7 +44,7 @@ let vendor = (() => {
   return false
 })()
 
-export function prefixStyle(style) {
+export function prefixStyle (style) {
   if (vendor === false) {
     return false
   }

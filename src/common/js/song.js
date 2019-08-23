@@ -1,5 +1,5 @@
 export default class Song {
-  constructor({id, mid, singer, name, album, duration, image, url}) {
+  constructor ({ id, mid, singer, name, album, duration, image, url }) {
     this.id = id
     this.mid = mid
     this.singer = singer
@@ -11,7 +11,7 @@ export default class Song {
   }
 }
 
-export function createSong(musicData) {
+export function createSong (musicData) {
   return new Song({
     id: musicData.songid,
     mid: musicData.songmid,
@@ -24,7 +24,7 @@ export function createSong(musicData) {
   })
 }
 
-function filterSinger(singer) {
+function filterSinger (singer) {
   let ret = []
   if (!singer) {
     return ''

@@ -16,11 +16,11 @@
 
 <script type="text/ecmascript6">
 import Bscroll from 'better-scroll'
-import {addClass} from 'common/js/dom'
+import { addClass } from 'common/js/dom'
 
 export default {
   name: 'slider',
-  data() {
+  data () {
     return {
       dots: [],
       currentPageIndex: 0
@@ -40,7 +40,7 @@ export default {
       default: 3000
     }
   },
-  mounted() {
+  mounted () {
     setTimeout(() => {
       this._setSliderWidth()
       this._initDots()
@@ -60,7 +60,7 @@ export default {
     })
   },
   methods: {
-    _setSliderWidth(isResize) {
+    _setSliderWidth (isResize) {
       // 获取sliderGroup的全部子元素节点
       this.children = this.$refs.sliderGroup.children
 
@@ -78,10 +78,10 @@ export default {
       }
       this.$refs.sliderGroup.style.width = width + 'px'
     },
-    _initDots() {
+    _initDots () {
       this.dots = new Array(this.children.length)
     },
-    _initSlider() {
+    _initSlider () {
       this.slider = new Bscroll(this.$refs.slider, {
         scrollX: true,
         scrollY: false,
@@ -105,7 +105,7 @@ export default {
         }
       })
     },
-    _play() {
+    _play () {
       let pageIndex = this.currentPageIndex + 1
       if (this.loop) {
         pageIndex += 1
@@ -116,7 +116,7 @@ export default {
       }, this.interval)
     }
   },
-  destroyed() {
+  destroyed () {
     if (this.autoPlay) {
       clearTimeout(this.timer)
     }

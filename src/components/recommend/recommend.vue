@@ -37,8 +37,8 @@
 import Loading from 'base/loading/loading'
 import Scroll from 'base/scroll/scroll'
 import Slider from 'base/slider/slider'
-import {getRecommend, getDiscList} from 'api/recommend'
-import {ERR_OK} from 'api/config'
+import { getRecommend, getDiscList } from 'api/recommend'
+import { ERR_OK } from 'api/config'
 
 export default {
   components: {
@@ -46,32 +46,32 @@ export default {
     Scroll,
     Loading
   },
-  data() {
+  data () {
     return {
       recommends: [],
       discList: []
     }
   },
-  created() {
+  created () {
     this._getRecommend()
     this._getDiscList()
   },
   methods: {
-    _getRecommend() {
+    _getRecommend () {
       getRecommend().then((res) => {
         if (res.code === ERR_OK) {
           this.recommends = res.data.slider
         }
       })
     },
-    _getDiscList() {
+    _getDiscList () {
       getDiscList().then((res) => {
         if (res.code === ERR_OK) {
           this.discList = res.data.list
         }
       })
     },
-    loadImage() {
+    loadImage () {
       if (!this.checkLoaded) {
         this.$refs.scroll.refresh()
         this.checkLoaded = true

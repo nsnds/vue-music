@@ -68,29 +68,29 @@
 </template>
 
 <script type="text/ecmascript-6">
-import {mapGetters, mapMutations} from 'vuex'
+import { mapGetters, mapMutations } from 'vuex'
 import animations from 'create-keyframe-animation'
-import {prefixStyle} from 'common/js/dom'
+import { prefixStyle } from 'common/js/dom'
 
 const transform = prefixStyle('transform')
 
 export default {
-  data() {
+  data () {
     return {
       songReady: false
     }
   },
   computed: {
-    cdCls() {
+    cdCls () {
       return this.playing ? 'play' : 'play pause'
     },
-    playIcon() {
+    playIcon () {
       return this.playing ? 'icon-pause' : 'icon-play'
     },
-    miniIcon() {
+    miniIcon () {
       return this.playing ? 'icon-pause-mini' : 'icon-play-mini'
     },
-    disableCls() {
+    disableCls () {
       return this.songReady ? '' : 'disable'
     },
     ...mapGetters([
@@ -102,14 +102,14 @@ export default {
     ])
   },
   methods: {
-    back() {
+    back () {
       this.setFullScreen(false)
     },
-    open() {
+    open () {
       this.setFullScreen(true)
     },
-    enter(el, done) {
-      const {x, y, scale} = this._getPosAndScale()
+    enter (el, done) {
+      const { x, y, scale } = this._getPosAndScale()
 
       let animation = {
         0: {
@@ -134,24 +134,24 @@ export default {
 
       animations.runAnimation(this.$refs.cdWrapper, 'move', done)
     },
-    afterEnter() {
+    afterEnter () {
       animations.unregisterAnimation('move')
       this.$refs.cdWrapper.style.animation = ''
     },
-    leave(el, done) {
+    leave (el, done) {
       this.$refs.cdWrapper.style.transition = 'all 0.4s'
-      const {x, y, scale} = this._getPosAndScale()
+      const { x, y, scale } = this._getPosAndScale()
       this.$refs.cdWrapper.style[transform] = `translate3d(${x}px, ${y}px, 0) scale(${scale})`
       this.$refs.cdWrapper.addEventListener('transitionend', done)
     },
-    afterLeave() {
+    afterLeave () {
       this.$refs.cdWrapper.style.transition = ''
       this.$refs.cdWrapper.style[transform] = ''
     },
-    togglePlaying() {
+    togglePlaying () {
       this.setPlayingState(!this.playing)
     },
-    next() {
+    next () {
       if (!this.songReady) return
       let index = this.currentIndex + 1
       if (index === this.playlist.length) {
@@ -163,7 +163,7 @@ export default {
       }
       this.songReady = false
     },
-    prev() {
+    prev () {
       if (!this.songReady) return
       let index = this.currentIndex - 1
       if (index === -1) {
@@ -175,13 +175,13 @@ export default {
       }
       this.songReady = false
     },
-    ready() {
+    ready () {
       this.songReady = true
     },
-    error() {
+    error () {
       this.songReady = true
     },
-    _getPosAndScale() {
+    _getPosAndScale () {
       // miniImg width
       const targetWidth = 40
       // miniImg中心离左边屏幕的距离
@@ -195,7 +195,7 @@ export default {
       const scale = targetWidth / width
       const x = -(window.innerWidth / 2 - paddingLeft)
       const y = window.innerHeight - paddingTop - width / 2 - paddingBottom
-      return {x, y, scale}
+      return { x, y, scale }
     },
     ...mapMutations({
       setFullScreen: 'SET_FULL_SCREEN',
@@ -204,12 +204,12 @@ export default {
     })
   },
   watch: {
-    currentSong(n) {
+    currentSong (n) {
       this.$nextTick(() => {
         this.$refs.audio.play()
       })
     },
-    playing(n) {
+    playing (n) {
       const audio = this.$refs.audio
       this.$nextTick(() => {
         n ? audio.play() : audio.pause()

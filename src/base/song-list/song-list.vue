@@ -25,11 +25,11 @@ export default {
     }
   },
   methods: {
-    selectItem(song, idx) {
+    selectItem (song, idx) {
       this.$emit('select', song, idx)
       console.log(idx)
     },
-    getDesc(song) {
+    getDesc (song) {
       return `${song.singer}·${song.album}`
     }
   }
